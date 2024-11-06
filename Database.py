@@ -32,6 +32,20 @@ CREATE TABLE IF NOT EXISTS DS_4220 (
 """
 cursor.execute(create_table_ds4220_sql)
 
+# Create the DS_4210 table for Business Intelligence basics
+create_table_ds4210_sql = """
+CREATE TABLE IF NOT EXISTS DS_4210 (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    question TEXT NOT NULL,
+    answer TEXT NOT NULL,
+    option1 TEXT NOT NULL,
+    option2 TEXT NOT NULL,
+    option3 TEXT NOT NULL,
+    option4 TEXT NOT NULL
+);
+"""
+cursor.execute(create_table_ds4210_sql)
+
 # List of questions for DS 3850 course on Python basics
 questions_ds3850 = [
     {
@@ -115,14 +129,6 @@ questions_ds3850 = [
         "option4": ".pt"
     }
 ]
-
-# Insert questions into DS_3850 table
-insert_question_sql = """
-INSERT INTO DS_3850 (question, answer, option1, option2, option3, option4)
-VALUES (:question, :answer, :option1, :option2, :option3, :option4)
-"""
-for q in questions_ds3850:
-    cursor.execute(insert_question_sql, q)
 
 # List of questions for DS 4220 course on R basics
 questions_ds4220 = [
@@ -208,6 +214,98 @@ questions_ds4220 = [
     }
 ]
 
+# List of questions for DS 4210 course on Business Intelligence basics
+questions_ds4210 = [
+    {
+        "question": "What is the primary purpose of Business Intelligence (BI)?",
+        "answer": "To support decision-making",
+        "option1": "To store large volumes of data",
+        "option2": "To support decision-making",
+        "option3": "To manage employees",
+        "option4": "To create advertising campaigns"
+    },
+    {
+        "question": "Which of the following is a commonly used BI tool?",
+        "answer": "Tableau",
+        "option1": "Photoshop",
+        "option2": "Excel",
+        "option3": "Tableau",
+        "option4": "Notepad"
+    },
+    {
+        "question": "What does ETL stand for in the context of BI?",
+        "answer": "Extract, Transform, Load",
+        "option1": "Extract, Transfer, Load",
+        "option2": "Extract, Transform, Load",
+        "option3": "Evaluate, Test, Learn",
+        "option4": "Encrypt, Transform, Load"
+    },
+    {
+        "question": "Which type of analytics focuses on historical data to explain what happened?",
+        "answer": "Descriptive Analytics",
+        "option1": "Predictive Analytics",
+        "option2": "Descriptive Analytics",
+        "option3": "Prescriptive Analytics",
+        "option4": "Cognitive Analytics"
+    },
+    {
+        "question": "What is a data warehouse?",
+        "answer": "A centralized storage for data",
+        "option1": "A physical room for storing documents",
+        "option2": "A system for cloud storage",
+        "option3": "A centralized storage for data",
+        "option4": "A tool for data visualization"
+    },
+    {
+        "question": "Which tool is commonly used for data visualization in BI?",
+        "answer": "Power BI",
+        "option1": "MS Word",
+        "option2": "Power BI",
+        "option3": "Notepad",
+        "option4": "Adobe Acrobat"
+    },
+    {
+        "question": "What is data mining?",
+        "answer": "The process of discovering patterns in large datasets",
+        "option1": "The process of storing data",
+        "option2": "The process of retrieving data",
+        "option3": "The process of discovering patterns in large datasets",
+        "option4": "The process of deleting redundant data"
+    },
+    {
+        "question": "Which of these is an example of predictive analytics?",
+        "answer": "Forecasting future sales",
+        "option1": "Visualizing past trends",
+        "option2": "Generating reports",
+        "option3": "Forecasting future sales",
+        "option4": "Describing past events"
+    },
+    {
+        "question": "What is the main purpose of a KPI in BI?",
+        "answer": "To measure performance",
+        "option1": "To increase revenue",
+        "option2": "To measure performance",
+        "option3": "To analyze competition",
+        "option4": "To hire employees"
+    },
+    {
+        "question": "Which of these is a BI technique used to clean and structure raw data?",
+        "answer": "Data preprocessing",
+        "option1": "Data sampling",
+        "option2": "Data visualization",
+        "option3": "Data preprocessing",
+        "option4": "Data modeling"
+    }
+]
+
+# Insert questions into DS_3850 table
+insert_question_sql = """
+INSERT INTO DS_3850 (question, answer, option1, option2, option3, option4)
+VALUES (:question, :answer, :option1, :option2, :option3, :option4)
+"""
+for q in questions_ds3850:
+    cursor.execute(insert_question_sql, q)
+
 # Insert questions into DS_4220 table
 insert_question_ds4220_sql = """
 INSERT INTO DS_4220 (question, answer, option1, option2, option3, option4)
@@ -216,10 +314,19 @@ VALUES (:question, :answer, :option1, :option2, :option3, :option4)
 for q in questions_ds4220:
     cursor.execute(insert_question_ds4220_sql, q)
 
-print("DS_3850 and DS_4220 tables with questions inserted successfully.")
+# Insert questions into DS_4210 table
+insert_question_ds4210_sql = """
+INSERT INTO DS_4210 (question, answer, option1, option2, option3, option4)
+VALUES (:question, :answer, :option1, :option2, :option3, :option4)
+"""
+for q in questions_ds4210:
+    cursor.execute(insert_question_ds4210_sql, q)
+
+print("DS_3850, DS_4220, and DS_4210 tables with questions inserted successfully.")
 
 # Commit and close the connection
 conn.commit()
 conn.close()
+
 
 
