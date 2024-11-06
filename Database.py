@@ -4,8 +4,9 @@ import sqlite3
 conn = sqlite3.connect('quiz_bowl.db')
 cursor = conn.cursor()
 
-# Create the DS_3850 table for Python basics
-create_table_ds3850_sql = """
+# Create tables
+# DS 3850 - Python Basics
+cursor.execute("""
 CREATE TABLE IF NOT EXISTS DS_3850 (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     question TEXT NOT NULL,
@@ -15,11 +16,10 @@ CREATE TABLE IF NOT EXISTS DS_3850 (
     option3 TEXT NOT NULL,
     option4 TEXT NOT NULL
 );
-"""
-cursor.execute(create_table_ds3850_sql)
+""")
 
-# Create the DS_4220 table for R basics
-create_table_ds4220_sql = """
+# DS 4220 - R Basics
+cursor.execute("""
 CREATE TABLE IF NOT EXISTS DS_4220 (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     question TEXT NOT NULL,
@@ -29,11 +29,10 @@ CREATE TABLE IF NOT EXISTS DS_4220 (
     option3 TEXT NOT NULL,
     option4 TEXT NOT NULL
 );
-"""
-cursor.execute(create_table_ds4220_sql)
+""")
 
-# Create the DS_4210 table for Business Intelligence basics
-create_table_ds4210_sql = """
+# DS 4210 - Business Intelligence Basics
+cursor.execute("""
 CREATE TABLE IF NOT EXISTS DS_4210 (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     question TEXT NOT NULL,
@@ -43,10 +42,23 @@ CREATE TABLE IF NOT EXISTS DS_4210 (
     option3 TEXT NOT NULL,
     option4 TEXT NOT NULL
 );
-"""
-cursor.execute(create_table_ds4210_sql)
+""")
 
-# List of questions for DS 3850 course on Python basics
+# MKT 3400 - Marketing Basics
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS MKT_3400 (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    question TEXT NOT NULL,
+    answer TEXT NOT NULL,
+    option1 TEXT NOT NULL,
+    option2 TEXT NOT NULL,
+    option3 TEXT NOT NULL,
+    option4 TEXT NOT NULL
+);
+""")
+
+# Insert questions
+# DS 3850 - Python Basics Questions
 questions_ds3850 = [
     {
         "question": "What is the output of 'print(2 + 3)'?",
@@ -130,7 +142,7 @@ questions_ds3850 = [
     }
 ]
 
-# List of questions for DS 4220 course on R basics
+# DS 4220 - R Basics Questions
 questions_ds4220 = [
     {
         "question": "What is the correct operator for assignment in R?",
@@ -214,7 +226,7 @@ questions_ds4220 = [
     }
 ]
 
-# List of questions for DS 4210 course on Business Intelligence basics
+# DS 4210 - Business Intelligence Basics Questions
 questions_ds4210 = [
     {
         "question": "What is the primary purpose of Business Intelligence (BI)?",
@@ -298,35 +310,113 @@ questions_ds4210 = [
     }
 ]
 
-# Insert questions into DS_3850 table
-insert_question_sql = """
-INSERT INTO DS_3850 (question, answer, option1, option2, option3, option4)
+# MKT 3400 - Marketing Basics Questions
+questions_mkt3400 = [
+    {
+        "question": "What is the '4 Ps' concept in marketing?",
+        "answer": "Product, Price, Place, Promotion",
+        "option1": "Product, Price, Place, Promotion",
+        "option2": "People, Process, Product, Place",
+        "option3": "Product, Price, People, Place",
+        "option4": "Process, Product, Price, Promotion"
+    },
+    {
+        "question": "Which of these is an example of a marketing strategy?",
+        "answer": "Social media advertising",
+        "option1": "Hiring employees",
+        "option2": "Inventory management",
+        "option3": "Social media advertising",
+        "option4": "Product assembly"
+    },
+    {
+        "question": "What does SWOT stand for in marketing?",
+        "answer": "Strengths, Weaknesses, Opportunities, Threats",
+        "option1": "Strengths, Weaknesses, Opportunities, Threats",
+        "option2": "Sales, Worth, Operations, Team",
+        "option3": "Services, Work, Objectives, Targets",
+        "option4": "Solutions, Workforce, Opportunities, Trends"
+    },
+    {
+        "question": "What is market segmentation?",
+        "answer": "Dividing a market into distinct groups of buyers",
+        "option1": "Setting a market price",
+        "option2": "Dividing a market into distinct groups of buyers",
+        "option3": "Increasing brand loyalty",
+        "option4": "Improving customer satisfaction"
+    },
+    {
+        "question": "Which of the following is a type of consumer market?",
+        "answer": "Personal consumption",
+        "option1": "Wholesale",
+        "option2": "Personal consumption",
+        "option3": "B2B transactions",
+        "option4": "Real estate investment"
+    },
+    {
+        "question": "What is brand positioning?",
+        "answer": "Establishing a brand's identity in the market",
+        "option1": "Selling the product",
+        "option2": "Determining the price",
+        "option3": "Establishing a brand's identity in the market",
+        "option4": "Selecting target markets"
+    },
+    {
+        "question": "Which is an example of a pricing strategy?",
+        "answer": "Penetration pricing",
+        "option1": "Product placement",
+        "option2": "Penetration pricing",
+        "option3": "Market segmentation",
+        "option4": "Supply chain management"
+    },
+    {
+        "question": "What does CRM stand for?",
+        "answer": "Customer Relationship Management",
+        "option1": "Customer Retention Management",
+        "option2": "Customer Relationship Marketing",
+        "option3": "Customer Relationship Management",
+        "option4": "Client Retention Marketing"
+    },
+    {
+        "question": "What is the purpose of a target market?",
+        "answer": "To focus marketing efforts on a specific group",
+        "option1": "To increase product prices",
+        "option2": "To establish production goals",
+        "option3": "To focus marketing efforts on a specific group",
+        "option4": "To hire sales staff"
+    },
+    {
+        "question": "What is product life cycle?",
+        "answer": "Stages a product goes through from introduction to decline",
+        "option1": "Product manufacturing process",
+        "option2": "Stages a product goes through from introduction to decline",
+        "option3": "Product branding process",
+        "option4": "Product segmentation technique"
+    }
+]
+
+# SQL Template for Inserting Questions
+insert_question_sql_template = """
+INSERT INTO {table} (question, answer, option1, option2, option3, option4)
 VALUES (:question, :answer, :option1, :option2, :option3, :option4)
 """
-for q in questions_ds3850:
-    cursor.execute(insert_question_sql, q)
 
-# Insert questions into DS_4220 table
-insert_question_ds4220_sql = """
-INSERT INTO DS_4220 (question, answer, option1, option2, option3, option4)
-VALUES (:question, :answer, :option1, :option2, :option3, :option4)
-"""
-for q in questions_ds4220:
-    cursor.execute(insert_question_ds4220_sql, q)
+# Insert Questions for Each Course
+for table_name, questions in {
+    "DS_3850": questions_ds3850,
+    "DS_4220": questions_ds4220,
+    "DS_4210": questions_ds4210,
+    "MKT_3400": questions_mkt3400
+}.items():
+    insert_question_sql = insert_question_sql_template.format(table=table_name)
+    for question in questions:
+        cursor.execute(insert_question_sql, question)
 
-# Insert questions into DS_4210 table
-insert_question_ds4210_sql = """
-INSERT INTO DS_4210 (question, answer, option1, option2, option3, option4)
-VALUES (:question, :answer, :option1, :option2, :option3, :option4)
-"""
-for q in questions_ds4210:
-    cursor.execute(insert_question_ds4210_sql, q)
-
-print("DS_3850, DS_4220, and DS_4210 tables with questions inserted successfully.")
+print("All tables created and questions inserted successfully.")
 
 # Commit and close the connection
 conn.commit()
 conn.close()
+
 
 
 
