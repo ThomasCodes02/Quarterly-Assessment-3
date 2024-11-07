@@ -1,17 +1,16 @@
 import sqlite3
 
 def populate_tables():
-    # Connect to SQLite database
+    # Connect Database
     conn = sqlite3.connect('Quiz_Bowl_Database.db')
     cursor = conn.cursor()
 
-    # SQL template for inserting questions
     insert_question_sql_template = """
     INSERT INTO {table} (question, answer, option1, option2, option3, option4)
     VALUES (:question, :answer, :option1, :option2, :option3, :option4)
     """
 
-    # Sample questions for each course (replace "..." with actual questions)
+    # Insert Questions
     questions_ds3850 = [
     {
         "question": "What is the output of 'print(2 + 3)'?",
@@ -444,10 +443,10 @@ def populate_tables():
 
     print("All tables populated with questions.")
 
-    # Commit and close the connection
+    # Close
     conn.commit()
     conn.close()
 
-# Run the function if this file is executed directly
+# Check if correct
 if __name__ == "__main__":
     populate_tables()
