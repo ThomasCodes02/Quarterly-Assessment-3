@@ -1,74 +1,18 @@
 import sqlite3
 
-# Connect to SQLite database
-conn = sqlite3.connect('quiz_bowl.db')
-cursor = conn.cursor()
+def populate_tables():
+    # Connect to SQLite database
+    conn = sqlite3.connect('Quiz_Bowl_Database.db')
+    cursor = conn.cursor()
 
-# Create tables for each course
-create_tables_sql = {
-    "DS_3850": """
-    CREATE TABLE IF NOT EXISTS DS_3850 (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        question TEXT NOT NULL,
-        answer TEXT NOT NULL,
-        option1 TEXT NOT NULL,
-        option2 TEXT NOT NULL,
-        option3 TEXT NOT NULL,
-        option4 TEXT NOT NULL
-    );
-    """,
-    "DS_4220": """
-    CREATE TABLE IF NOT EXISTS DS_4220 (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        question TEXT NOT NULL,
-        answer TEXT NOT NULL,
-        option1 TEXT NOT NULL,
-        option2 TEXT NOT NULL,
-        option3 TEXT NOT NULL,
-        option4 TEXT NOT NULL
-    );
-    """,
-    "DS_4210": """
-    CREATE TABLE IF NOT EXISTS DS_4210 (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        question TEXT NOT NULL,
-        answer TEXT NOT NULL,
-        option1 TEXT NOT NULL,
-        option2 TEXT NOT NULL,
-        option3 TEXT NOT NULL,
-        option4 TEXT NOT NULL
-    );
-    """,
-    "MKT_3400": """
-    CREATE TABLE IF NOT EXISTS MKT_3400 (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        question TEXT NOT NULL,
-        answer TEXT NOT NULL,
-        option1 TEXT NOT NULL,
-        option2 TEXT NOT NULL,
-        option3 TEXT NOT NULL,
-        option4 TEXT NOT NULL
-    );
-    """,
-    "HIST_1310": """
-    CREATE TABLE IF NOT EXISTS HIST_1310 (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        question TEXT NOT NULL,
-        answer TEXT NOT NULL,
-        option1 TEXT NOT NULL,
-        option2 TEXT NOT NULL,
-        option3 TEXT NOT NULL,
-        option4 TEXT NOT NULL
-    );
+    # SQL template for inserting questions
+    insert_question_sql_template = """
+    INSERT INTO {table} (question, answer, option1, option2, option3, option4)
+    VALUES (:question, :answer, :option1, :option2, :option3, :option4)
     """
-}
 
-# Execute table creation statements
-for table_sql in create_tables_sql.values():
-    cursor.execute(table_sql)
-
-# Insert question templates for each course (replace "..." with actual questions)
-questions_ds3850 = [
+    # Sample questions for each course (replace "..." with actual questions)
+    questions_ds3850 = [
     {
         "question": "What is the output of 'print(2 + 3)'?",
         "answer": "5",
@@ -151,7 +95,7 @@ questions_ds3850 = [
     }
 ]
 
-questions_ds4220 = [
+    questions_ds4220 = [
     {
         "question": "What is the correct operator for assignment in R?",
         "answer": "<-",
@@ -234,7 +178,7 @@ questions_ds4220 = [
     }
 ]
 
-questions_ds4210 = [
+    questions_ds4210 = [
     {
         "question": "What is the primary purpose of Business Intelligence (BI)?",
         "answer": "To support decision-making",
@@ -317,8 +261,7 @@ questions_ds4210 = [
     }
 ]
 
-
-questions_mkt3400 = [
+    questions_mkt3400 = [
     {
         "question": "What is the '4 Ps' concept in marketing?",
         "answer": "Product, Price, Place, Promotion",
@@ -401,7 +344,7 @@ questions_mkt3400 = [
     }
 ]
 
-questions_hist1310 = [
+    questions_hist1310 = [
     {
         "question": "Who was the first president of the United States?",
         "answer": "George Washington",
@@ -484,32 +427,27 @@ questions_hist1310 = [
     }
 ]
 
+    # Dictionary of tables and their respective question data
+    courses = {
+        "DS_3850": questions_ds3850,
+        "DS_4220": questions_ds4220,
+        "DS_4210": questions_ds4210,
+        "MKT_3400": questions_mkt3400,
+        "HIST_1310": questions_hist1310
+    }
 
-# SQL template for inserting questions into each table
-insert_question_sql_template = """
-INSERT INTO {table} (question, answer, option1, option2, option3, option4)
-VALUES (:question, :answer, :option1, :option2, :option3, :option4)
-"""
+    # Insert questions for each table
+    for table_name, questions in courses.items():
+        insert_question_sql = insert_question_sql_template.format(table=table_name)
+        for q in questions:
+            cursor.execute(insert_question_sql, q)
 
-# Insert questions for each course
-for table_name, questions in {
-    "DS_3850": questions_ds3850,
-    "DS_4220": questions_ds4220,
-    "DS_4210": questions_ds4210,
-    "MKT_3400": questions_mkt3400,
-    "HIST_1310": questions_hist1310
-}.items():
-    insert_question_sql = insert_question_sql_template.format(table=table_name)
-    for q in questions:
-        cursor.execute(insert_question_sql, q)
+    print("All tables populated with questions.")
 
-print("All tables created and questions inserted successfully.")
+    # Commit and close the connection
+    conn.commit()
+    conn.close()
 
-# Commit and close the connection
-conn.commit()
-conn.close()
-
-
-
-
-
+# Run the function if this file is executed directly
+if __name__ == "__main__":
+    populate_tables()
