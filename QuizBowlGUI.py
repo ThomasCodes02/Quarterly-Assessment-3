@@ -8,12 +8,14 @@ cursor = conn.cursor()
 
 # Quiz Window class
 class QuizWindow:
-    def __init__(self, root, course_name):
+    def __init__(self, course_name):
         self.course_name = course_name
         self.questions = self.get_questions(course_name)
         self.question_index = 0
         self.score = 0
-        self.root = root
+        self.quiz_window = tk.Tk()  # Create a new main window for the quiz
+        self.quiz_window.title(f"{self.course_name} Quiz")
+        self.quiz_window.geometry("400x300")
         self.setup_window()
         self.load_question()
 
@@ -24,10 +26,6 @@ class QuizWindow:
 
     # Setup the quiz window interface
     def setup_window(self):
-        self.quiz_window = tk.Toplevel(self.root)
-        self.quiz_window.title(f"{self.course_name} Quiz")
-        self.quiz_window.geometry("400x300")
-        
         self.question_label = tk.Label(self.quiz_window, text="", wraplength=350, font=("Arial", 12), justify="left")
         self.question_label.pack(pady=10)
 
@@ -41,7 +39,7 @@ class QuizWindow:
             radio_button.pack(anchor="w", padx=20)
 
         # Button to go to the next question
-        self.next_button = tk.Button(self.quiz_window, text="Submit Answer", command=self.check_answer)
+        self.next_button = tk.Button(self.quiz_window, text="Next Question", command=self.check_answer)
         self.next_button.pack(pady=20)
 
     # Function to load the current question and display answer options
@@ -98,7 +96,8 @@ class QuizWindow:
 def start_quiz():
     selected_course = course_var.get()
     if selected_course:
-        QuizWindow(root, selected_course)
+        root.destroy()  # Close the main window
+        QuizWindow(selected_course)  # Open the quiz window
     else:
         messagebox.showwarning("Select Course", "Please select a course to start the quiz.")
 
@@ -123,4 +122,3 @@ root.mainloop()
 
 # Close the database connection when done
 conn.close()
-
