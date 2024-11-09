@@ -29,8 +29,11 @@ class QuizWindow:
         self.question_label = tk.Label(self.quiz_window, text="", wraplength=350, font=("Arial", 12), justify="left")
         self.question_label.pack(pady=10)
 
-        # Variable to track selected answer and radio buttons for options
-        self.var = tk.StringVar()
+        # Variable to track selected answer; initialize with an empty string to avoid pre-selection
+        self.var = tk.StringVar(value="")
+        self.var.set("")  # Ensure no default selection
+
+        # Create radio buttons for answer options
         self.radio_buttons = [
             tk.Radiobutton(self.quiz_window, text="", variable=self.var, font=("Arial", 10), value="", command=self.highlight_selection)
             for _ in range(4)
@@ -48,13 +51,13 @@ class QuizWindow:
             question, answer, option1, option2, option3, option4 = self.questions[self.question_index]
             self.question_label.config(text=question)
             self.correct_answer = answer
-            self.var.set("")  # Clear selection
+            self.var.set("")  # Clear selection each time a new question loads
 
             # Set text and value of each radio button to display answer options
             radio_options = [option1, option2, option3, option4]
             for i, radio_button in enumerate(self.radio_buttons):
                 radio_button.config(text=radio_options[i], value=radio_options[i])
-                radio_button.deselect()
+                radio_button.deselect()  # Ensure no radio button is selected by default
                 radio_button.config(bg="SystemButtonFace")  # Reset background color
         else:
             messagebox.showinfo("Quiz Complete", f"You scored {self.score} out of {len(self.questions)}")
@@ -80,16 +83,37 @@ class QuizWindow:
         self.load_question()
 
     # Function to show feedback popup
+       # Function to show feedback popup without minimize, maximize, or close buttons
     def show_feedback_popup(self, message, symbol, color):
+        # Create the popup window as a top-level window
         popup = tk.Toplevel(self.quiz_window)
         popup.geometry("150x100")
-        popup.title("Feedback")
-        label = tk.Label(popup, text=symbol, font=("Arial", 30), fg=color)
+        
+        # Remove window decorations (no close, minimize, or maximize buttons)
+        popup.overrideredirect(True)
+
+        # Get screen dimensions to center the popup
+        screen_width = popup.winfo_screenwidth()
+        screen_height = popup.winfo_screenheight()
+        popup_x = (screen_width // 2) - 75  # Center horizontally
+        popup_y = (screen_height // 2) - 50  # Center vertically
+        popup.geometry(f"150x100+{popup_x}+{popup_y}")
+
+        # Add border by placing a frame with a background color
+        border_frame = tk.Frame(popup, bg="black", padx=3, pady=3)
+        border_frame.pack(fill="both", expand=True)
+
+        # Inner frame for actual content, with padding for border effect
+        inner_frame = tk.Frame(border_frame, bg="white")
+        inner_frame.pack(fill="both", expand=True, padx=3, pady=3)
+
+        # Feedback symbol and message
+        label = tk.Label(inner_frame, text=symbol, font=("Arial", 30), fg=color, bg="white")
         label.pack(pady=10)
-        text_label = tk.Label(popup, text=message, font=("Arial", 12))
+        text_label = tk.Label(inner_frame, text=message, font=("Arial", 12), bg="white")
         text_label.pack()
 
-        # Close the popup after a short delay
+        # Automatically close the popup after a short delay
         popup.after(1000, popup.destroy)
 
 # Main application window for selecting a course
@@ -122,3 +146,4 @@ root.mainloop()
 
 # Close the database connection when done
 conn.close()
+
