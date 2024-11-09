@@ -41,7 +41,7 @@ class QuizWindow:
             radio_button.pack(anchor="w", padx=20)
 
         # Button to go to the next question
-        self.next_button = tk.Button(self.quiz_window, text="Next Question", command=self.check_answer)
+        self.next_button = tk.Button(self.quiz_window, text="Submit Answer", command=self.check_answer)
         self.next_button.pack(pady=20)
 
     # Function to load the current question and display answer options
