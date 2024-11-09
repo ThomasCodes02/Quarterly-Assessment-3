@@ -16,6 +16,7 @@ class QuizWindow:
         self.quiz_window = tk.Tk()  # Create a new main window for the quiz
         self.quiz_window.title(f"{self.course_name} Quiz")
         self.quiz_window.geometry("400x300")
+        self.var = tk.StringVar()  # Initialize StringVar for radio button selection
         self.setup_window()
         self.load_question()
 
@@ -29,9 +30,8 @@ class QuizWindow:
         self.question_label = tk.Label(self.quiz_window, text="", wraplength=350, font=("Arial", 12), justify="left")
         self.question_label.pack(pady=10)
 
-        # Variable to track selected answer; initialize with an empty string to avoid pre-selection
-        self.var = tk.StringVar(value="")
-        self.var.set("")  # Ensure no default selection
+        # Clear selection each time setup_window is called
+        self.var.set("")  # Ensure no default selection on the first load
 
         # Create radio buttons for answer options
         self.radio_buttons = [
@@ -82,8 +82,7 @@ class QuizWindow:
         self.question_index += 1
         self.load_question()
 
-    # Function to show feedback popup
-       # Function to show feedback popup without minimize, maximize, or close buttons
+    # Function to show feedback popup without minimize, maximize, or close buttons
     def show_feedback_popup(self, message, symbol, color):
         # Create the popup window as a top-level window
         popup = tk.Toplevel(self.quiz_window)
@@ -146,4 +145,3 @@ root.mainloop()
 
 # Close the database connection when done
 conn.close()
-
