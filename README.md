@@ -7,5 +7,7 @@
 # Seperated Files and renamed the database
 # Added Quiz Bowl GUI and pop up window to show if the user got the question correct or not
 
+# I could not get the buttons to not populate but the GUI works fine otherwise.
+# Maximize the window for the best experience 
 
 # I used primarly chatGPT to populate the database and build the GUI. Most of the code for these two file comes from chatGPT. The data base file I made mostly on my own from the notes. The bottom part of the database file comes from chatGPT. The top part might be chatGPT because we used chatGPT because we used it in the lectures.

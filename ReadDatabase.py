@@ -18,7 +18,7 @@ def view_database():
     print("Available tables in the database:")
     for idx, table in enumerate(tables, start=1):
         print(f"{idx}. {table[0]}")
-
+    
     # Prompt the user to choose a table
     table_choice = input("Enter the name of the table you want to view data from: ")
 
